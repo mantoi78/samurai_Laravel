@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Goal extends Model
@@ -11,7 +10,6 @@ class Goal extends Model
     {
         return $this->belongsTo('App\User');
     }
-
     public function todos()
     {
         return $this->hasMany('App\Todo');
