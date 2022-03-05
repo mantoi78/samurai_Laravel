@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use IIlluminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Todo extends Model
 {

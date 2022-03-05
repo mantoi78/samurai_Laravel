@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GoalController;
+use App\Http\Controllers\TodoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +16,14 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', [HomeController::class,'index']);
+Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/home', [HomeController::class,'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::resource("goals", GoalController::class);
+Route::resource("goals", 'GoalController')->middleware('auth');
 
-Route::resource("goals.todos", TodoController::class);
-
-Route::post('/goals/{goal}/todos/{todo}/sort', 'TodoController@sort');
+Route::resource("goals.todos", 'TodoController')->middleware('auth');
+Route::post('/goals/{goal}/todos/{todo}/sort', [TodoController::class, 'sort'])->middleware('auth');
 
 Auth::routes();
 

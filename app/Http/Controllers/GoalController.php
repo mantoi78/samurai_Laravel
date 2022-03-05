@@ -4,28 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GoalController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
-        //
+        $goals = Auth::user()->goals;
+
+        return response()->json($goals);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,51 +29,52 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $goal = new Goal();
+        $goal->title = request('title');
+        $goal->user_id = Auth::id();
+        $goal->save();
+
+        $goals = Auth::user()->goals;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Goal $goal)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Goal $goal)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
      */
-    public function update(Request $request, Goal $goal)
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $id)
     {
-        //
+        $goal->title = request('title');
+        $goal->user_id = Auth::id();
+        $goal->save();
+
+        $goals = Auth::user()->goals;
+
+        return response()->json($goals);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Goal  $goal
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
      */
-    public function destroy(Goal $goal)
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
-        //
+        $goal->delete();
+
+        $goals = Auth::user()->goals;
+
+        return response()->json($goals);
     }
 }
